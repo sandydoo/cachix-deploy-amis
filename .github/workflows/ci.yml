@@ -32,7 +32,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/github-actions-cachix-deploy-amis
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/cachix-deploy-amis
           aws-region: ${{ env.AWS_REGION }}
 
       - uses: cachix/install-nix-action@v22
