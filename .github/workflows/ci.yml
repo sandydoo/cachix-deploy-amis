@@ -20,20 +20,22 @@ jobs:
   # Can't capture all of the outputs from a matrix build until this is fully implemented:
   # https://github.com/actions/runner/pull/2477#issuecomment-1501003600
   build-ami-x86_64-linux:
-    runs-on: [self-hosted, linux, X64]
+    # runs-on: [self-hosted, linux, X64]
+    runs-on: ubuntu-latest
 
     outputs:
       amis: ${{ steps.build-ami.outputs.amis }}
 
     steps:
       - uses: actions/checkout@v2
-      - uses: cachix/install-nix-action@v22
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::672242615610:role/github-actions-cachix-delpoy-amis
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/github-actions-cachix-deploy-amis
           aws-region: ${{ env.AWS_REGION }}
+
+      - uses: cachix/install-nix-action@v22
 
       - run: |
           nix profile install nixpkgs#unzip nixpkgs#which
